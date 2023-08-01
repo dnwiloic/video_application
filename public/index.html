@@ -20,20 +20,21 @@
           </span>
         </div>
       </nav>
-    <form id="room-name-form" class="form container">
-        <span class="mb-3 form-group">
-            <label for="room-name-input" class="form-label">Enter a room name to join: </label>
-            <input class="form-control" name ="room-name" id="room-name-input" type="text"/>
-        </span>
-        <!-- <div class="mb-3 form-group">
-            <span><label for="user-name-input" class="form-label">Enter your name: </label></span>
-            <input class="form-control" name ="user-name" id="user-name-input" type="text"/>
-        </div> -->
-        <button type="submit" class="btn btn-primary">join Room</button>
-    </form>
-    <div class="container">
+      <div class="container">
         <div id="video-container" class="row"></div>
     </div>
+    <form id="room-name-form" class="form container">
+        <span class="my-3 form-group">
+            <label for="room-name-input" class="form-label">Enter a room name to join it: </label>
+            <input class="form-control" name ="room-name" id="room-name-input" type="text" required/>
+        </span>
+        <div class="my-3 form-group">
+            <span><label for="user-name-input" class="form-label">Enter your name: </label></span>
+            <input class="form-control" name ="user-name" id="user-name-input" type="text" required/>
+        </div>
+        <button type="submit" class="btn btn-primary">join Room</button>
+    </form>
+   
     
     <script src="./main.js"></script>
 </body>

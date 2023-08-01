@@ -1,6 +1,8 @@
 
 const form = document.getElementById("room-name-form");
 const roomNameInput = document.getElementById("room-name-input");
+const userNameInput = document.getElementById("user-name-input");
+
 const container = document.getElementById("video-container");
 
 const staetRoom = async (event) => {
@@ -8,6 +10,7 @@ const staetRoom = async (event) => {
     form.style.visibility = "hidden";
 
     const roomName = roomNameInput.value;
+    
 
     const response = await fetch("/join-room",{
         method: "POST",
@@ -16,7 +19,7 @@ const staetRoom = async (event) => {
             "Content-type": "application/json"
         },
         body: JSON.stringify({
-            roomName: roomName
+            roomName: roomName,
         })
     });
 
@@ -42,7 +45,7 @@ const handleConnectedParticipant = (participant) =>{
     // create a div for this participant tracks
     const participantDiv = document.createElement("div");
     participantDiv.setAttribute("id", participant.identify);
-    participantDiv.classList.add("col", "m-2", "rounded-2", "border-5", "border-primary")
+    participantDiv.classList.add("video-participant","col", "m-2", "rounded-2", "border-5", "border-primary")
     container.appendChild(participantDiv);
 
     // iterate through the participant's published tracks  and
@@ -60,14 +63,20 @@ const handleTrackPublication = (trackPublication, participant) => {
     function displayTrack(track){
         // append this track to the participant's div and render it on the page
         const participantDiv = document.getElementById(participant.identify);
+        
         // track.attach create an HTMLVideoElement or HTMLAuudioElement
         // (depending on the type of track) and  adds  the video or audio stream
         participantDiv.append(track.attach());
         // add the participant name
-        const name = document.createElement("p");
-        name.classList.add("name");
-        name.append( document.createTextNode("Your name"));
-        participantDiv.append("name");
+        if(track.kind === "video"){
+            setTimeout(() => {
+                participantDiv.classList.add('live');
+              }, 2000);
+            const name = document.createElement("p");
+            name.classList.add("name");
+            name.append( document.createTextNode(participant.identity));
+            participantDiv.append(name);
+        }
     }
 
     // check if the trackPublication contains a `track` attribute. If it does,
@@ -90,8 +99,10 @@ handleDisconnectedParticipant = (participant) => {
 }
 
 const joinVideoRoom = async (roomName, token) => {
+    const userName = userNameInput.value;
+    console.log(userName)
     // join the video room with the Access Token and the given room  name
-    const room = await Twilio.Video.connect(token, {room: roomName});
+    const room = await Twilio.Video.connect(token, {room: roomName, identity: userName});
     return room;
 }
 

@@ -99,6 +99,14 @@ handleDisconnectedParticipant = (participant) => {
 }
 
 const joinVideoRoom = async (roomName, token) => {
+
+    const callDiv = document.getElementById("call-div");
+    const message = document.createElement("div");
+    message.classList.add("alert", "alert-success");
+    message.append( document.createTextNode(`a room name is "${roomName}" share it with other participant`));
+    callDiv.append(message);
+
+
     const userName = userNameInput.value;
     console.log(userName)
     // join the video room with the Access Token and the given room  name

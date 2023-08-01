@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Demo by Dn</title>
+    <!-- Twilio Video CDN -->
+    <script src="//sdk.twilio.com/js/video/releases/2.27.0/twilio-video.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" href="./style.css" />
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script src="./script.js" defer></script>
+</head>
+<body class=" ">
+    <nav class="navbar bg-body-tertiary mb-5">
+        <div class="container-fluid">
+          <span class="navbar-text">
+            Make a call with someone: create or join a room by Entering the room name
+          </span>
+        </div>
+      </nav>
+    <form id="room-name-form" class="form container">
+        <span class="mb-3 form-group">
+            <label for="room-name-input" class="form-label">Enter a room name to join: </label>
+            <input class="form-control" name ="room-name" id="room-name-input" type="text"/>
+        </span>
+        <!-- <div class="mb-3 form-group">
+            <span><label for="user-name-input" class="form-label">Enter your name: </label></span>
+            <input class="form-control" name ="user-name" id="user-name-input" type="text"/>
+        </div> -->
+        <button type="submit" class="btn btn-primary">join Room</button>
+    </form>
+    <div class="container">
+        <div id="video-container" class="row"></div>
+    </div>
+    
+    <script src="./main.js"></script>
+</body>
+</html>

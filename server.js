@@ -1,12 +1,15 @@
 require("dotenv").config();
 const {v4: uuidv4 } =require("uuid")
 const twilio = require("twilio")
+const cors = require("cors")
 const AccessToken = twilio.jwt.AccessToken;
 const VideoGrant = AccessToken.VideoGrant;
 const express = require("express");
+
 const app = express()
 const port = 5000;
 
+app.use(cors())
  // use the express JSON middleware
  app.use(express.json())
 

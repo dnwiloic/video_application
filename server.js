@@ -141,8 +141,8 @@ app.use(cors())
  });
 
  app.post("/room-event", async (req, res) => {
-    
-    res.status(200).send(handleStatusCallBack(req.body));
+    const res = await handleStatusCallBack(req.body)
+    res.status(200).send();
  })
 
  app.get('/video-room', async (req, res) => {

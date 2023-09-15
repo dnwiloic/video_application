@@ -144,6 +144,9 @@ app.use(cors())
     res.status(200).send(handleStatusCallBack(req.body));
  })
 
+ app.get('/video-room', async (req, res) => {
+    res.status(200).send(videoRoom);
+ })
  // sserve static files from the public directory
  app.use(express.static("public"));
 

@@ -5,6 +5,14 @@ const userNameInput = document.getElementById("user-name-input");
 
 const container = document.getElementById("video-container");
 
+let videoRoom ;
+ 
+window.setInterval(  async () => {
+    const response = await fetch("/video-room");
+    videoRoom = response.json();
+    console.log(videoRoom)
+}, 5000);
+
 const staetRoom = async (event) => {
     event.preventDefault();
     form.style.visibility = "hidden";

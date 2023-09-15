@@ -116,7 +116,7 @@ const joinVideoRoom = async (roomName, token) => {
     const message = document.createElement("div");
     const btnVideoroom = document.createElement("button")
 
-    btnVideoroom.classList.add("btn btn-success");
+    btnVideoroom.classList.add("btn", "btn-success");
     btnVideoroom.addEventListener("click",getVideoRoom);
 
     message.classList.add("alert", "alert-success");

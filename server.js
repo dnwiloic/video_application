@@ -25,7 +25,8 @@ app.use(cors())
 
   const handleStatusCallBack =  async(statusCallback) => {
     // Process the callback data based on the event.
-   
+    videoRoom = statusCallback;
+    return videoRoom;
    const roomSid = statusCallback.RoomSid;
    try{
         videoRoom.roomSid = roomSid;
@@ -139,7 +140,7 @@ app.use(cors())
     });
  });
 
- app.post('/room-event', async (req, res) => {
+ app.post("/room-event", async (req, res) => {
     
     res.status(200).send(handleStatusCallBack(req.body));
  })

@@ -5,8 +5,9 @@ const cors = require("cors")
 const AccessToken = twilio.jwt.AccessToken;
 const VideoGrant = AccessToken.VideoGrant;
 const express = require("express");
+const SITE_URL = process.env.SITE_URL;
 
-const app = express()
+const app = express()   
 const port = 5000;
 
 app.use(cors())
@@ -20,6 +21,64 @@ app.use(cors())
     process.env.TWILIO_API_KEY_SECRET,
     {accountSid: process.env.TWILIO_ACCOUNT_SID}
  )
+ const videoRoom = {}
+
+  const handleStatusCallBack =  async(statusCallback) => {
+    // Process the callback data based on the event.
+   
+   const roomSid = statusCallback.RoomSid;
+   try{
+        videoRoom.roomSid = roomSid;
+       if(true){
+           const event = statusCallback.StatusCallbackEvent;
+           const participantIdentity = statusCallback.ParticipantIdentity ;
+           
+
+           switch(event){
+               case 'room-created':
+                   // Handle room creation event.
+                   const roomCreateDate = new Date();
+                   videoRoom.start_date = roomCreateDate;
+                   break;
+
+               case 'room-ended':
+                   // Handle participant connection event.
+                   const roomDuration = statusCallback.RoomDuration;
+                   const roomEnd = new Date();
+                   videoRoom.end_date = roomEnd;
+                   videoRoom.duration = roomDuration
+                   break;
+
+               case 'participant-connected' :
+                   if(participantIdentity){
+                       if(!videoRoom[participantIdentity] || !videoRoom[participantIdentity].first_connection){
+                           videoRoom[participantIdentity].first_connection = new Date();
+                           videoRoom[participantIdentity].duration = 0;
+                       }
+
+                   }
+               
+                   break;
+
+               case 'participant-disconnected' :
+                   if(participantIdentity){
+                       const disconnectedDate = new Date()
+                       const participantDuration =  statusCallback.ParticipantDuration
+                        videoRoom[participantIdentity].duration = videoRoom[participantIdentity].duration + participantDuration;
+                        videoRoom[participantIdentity].last_disconnsction = disconnectedDate;
+                   }
+
+                   break;
+           }
+       }
+   }catch(error){
+       return error
+   }
+   
+   console.log(videoRoom)
+  
+   return { success: true };
+}
 
  const findOrCreateRoom = async (roomName) => {
     try {
@@ -30,7 +89,10 @@ app.use(cors())
         if(error.code = 20404){
             await twilioClient.video.v1.rooms.create({
                 uniqueName: roomName,
-                type: "go",
+                type: "group",
+                recordParticipantsOnConnect: true,
+                statusCallbackMethod: 'POST',
+                statusCallback:SITE_URL+"/room-event"
             });
         } else {
             // let another error bubble up
@@ -39,14 +101,14 @@ app.use(cors())
     }
  }
 
- const getAccessToken = (rootName) => {
+ const getAccessToken = (rootName, userName) => {
     // create an accessToken
     const token = new AccessToken(
         process.env.TWILIO_ACCOUNT_SID,
         process.env.TWILIO_API_KEY_SID,
         process.env.TWILIO_API_KEY_SECRET,
         //generate a random unique identify for this participant
-        {identity: uuidv4()}
+        {identity: userName}
     );
 
     // create a video grant for this specific room
@@ -67,14 +129,20 @@ app.use(cors())
     }
 
     const roomName = req.body.roomName;
+    const userName = req.body.userName;
     // find or create a room with a given roomName
     findOrCreateRoom(roomName);
     // generate a access Token for a participant in this room 
-    const token = getAccessToken(roomName);
+    const token = getAccessToken(roomName, userName);
     res.send({
         token: token
     });
  });
+
+ app.post('room-event', async (req, res) => {
+    
+    res.status(200).send(handleStatusCallBack(req.body));
+ })
 
  // sserve static files from the public directory
  app.use(express.static("public"));

@@ -10,7 +10,7 @@ const staetRoom = async (event) => {
     form.style.visibility = "hidden";
 
     const roomName = roomNameInput.value;
-    
+    const userName = userNameInput.value;
 
     const response = await fetch("/join-room",{
         method: "POST",
@@ -20,6 +20,7 @@ const staetRoom = async (event) => {
         },
         body: JSON.stringify({
             roomName: roomName,
+            userName: userName
         })
     });
 

@@ -2,18 +2,19 @@
 const form = document.getElementById("room-name-form");
 const roomNameInput = document.getElementById("room-name-input");
 const userNameInput = document.getElementById("user-name-input");
+const getVideoRoomBtn = document.getElementById("user-name-input");
 
 const container = document.getElementById("video-container");
 
 let videoRoom ;
  
-window.setInterval(  async () => {
+const getVideoRoom = async () => {
     console.log("getting video room")
     const response = await fetch("/video-room");
     videoRoom = await response.json();
     console.log("video room :");
     console.log(videoRoom)
-}, 5000);
+};
 
 const staetRoom = async (event) => {
     event.preventDefault();
@@ -113,9 +114,15 @@ const joinVideoRoom = async (roomName, token) => {
 
     const callDiv = document.getElementById("call-div");
     const message = document.createElement("div");
+    const btnVideoroom = document.createElement("button")
+
+    btnVideoroom.classList.add("btn btn-success");
+    btnVideoroom.addEventListener("click",getVideoRoom);
+
     message.classList.add("alert", "alert-success");
     message.append( document.createTextNode(`a room name is "${roomName}" share it with other participant`));
     callDiv.append(message);
+    callDiv.append(btnVideoroom)
 
 
     const userName = userNameInput.value;

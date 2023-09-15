@@ -10,7 +10,7 @@ let videoRoom ;
 window.setInterval(  async () => {
     console.log("getting video room")
     const response = await fetch("/video-room");
-    videoRoom = response.json();
+    videoRoom = await response.json();
     console.log("video room :");
     console.log(videoRoom)
 }, 5000);

@@ -23,10 +23,8 @@ app.use(cors())
  )
  const videoRoom = {}
 
-  const handleStatusCallBack =  async(statusCallback) => {
+  const handleStatusCallBack =  async (statusCallback) => {
     // Process the callback data based on the event.
-    videoRoom = statusCallback;
-    return videoRoom;
    const roomSid = statusCallback.RoomSid;
    try{
         videoRoom.roomSid = roomSid;
@@ -52,11 +50,12 @@ app.use(cors())
 
                case 'participant-connected' :
                    if(participantIdentity){
+                    
                        if(!videoRoom[participantIdentity] || !videoRoom[participantIdentity].first_connection){
+                           videoRoom[participantIdentity]={}
                            videoRoom[participantIdentity].first_connection = new Date();
                            videoRoom[participantIdentity].duration = 0;
                        }
-
                    }
                
                    break;
